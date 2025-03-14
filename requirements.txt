@@ -1,0 +1,9 @@
+Flask
+torch
+spacy
+pandas
+nltk
+pymupdf  
+transformers
+sentence-transformers
+werkzeug
