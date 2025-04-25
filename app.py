@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import os
+os.environ["USE_TF"] = "0"  # Disable TensorFlow usage in transformers
+
 import torch
 import spacy
 import pandas as pd
