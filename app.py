@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, send_file
 import os
 os.environ["USE_TF"] = "0"  # Disable TensorFlow usage in transformers
 
+# Flask app initialization
+app = Flask(__name__)
+
 import torch
 import spacy
 import pandas as pd
@@ -17,8 +20,22 @@ from sentence_transformers import SentenceTransformer, util
 import nltk
 nltk.download('punkt') 
 
-# Flask app initialization
-app = Flask(__name__)
+
+import threading
+import subprocess
+
+
+def download_spacy_model():
+    try:
+        print("Checking if spaCy model exists...")
+        subprocess.run(["python", "-m", "spacy", "validate"], check=True)
+    except Exception:
+        print("Downloading spaCy model...")
+        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"], check=True)
+
+# Start a background thread to download the model
+threading.Thread(target=download_spacy_model, daemon=True).start()
+
 UPLOAD_FOLDER = "/tmp/uploads"
 OUTPUT_FOLDER = "/tmp/processed"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
